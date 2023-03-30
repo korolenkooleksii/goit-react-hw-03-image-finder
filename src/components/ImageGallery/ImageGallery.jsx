@@ -3,7 +3,9 @@ import { Gallery } from './ImageGallery.styled';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Button from 'components/Button/Button';
 import fetchImages from 'components/Api/Api';
-import { RotatingLines } from 'react-loader-spinner';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Loader from '../Loader/Loader';
 
 class ImageGallery extends Component {
   state = {
@@ -19,7 +21,10 @@ class ImageGallery extends Component {
       this.setState({ currentArray: [], page: 1 });
     }
 
-    if (prevState.page !== this.state.page || this.props !== prevProps) {
+    if (
+      prevState.page !== this.state.page ||
+      this.props.images !== prevProps.images
+    ) {
       try {
         this.setState({ isLoading: true });
 
@@ -28,11 +33,17 @@ class ImageGallery extends Component {
           this.state.page
         );
 
-        console.log(imagesArrey.length);
+        if (imagesArrey.length === 0) {
+          toast.info('There are no images for your request.');
+          this.setState({ isLoading: false });
+          return;
+        }
 
         if (imagesArrey.length === 12) {
           this.setState({ disabled: true });
-        } else {this.setState({ disabled: false });}
+        } else {
+          this.setState({ disabled: false });
+        }
 
         this.setState(({ currentArray }) => ({
           currentArray: [...currentArray, ...imagesArrey],
@@ -63,15 +74,7 @@ class ImageGallery extends Component {
             />
           ))}
         </Gallery>
-        {this.state.isLoading && (
-          <RotatingLines
-            strokeColor="#3f51b5"
-            strokeWidth="5"
-            animationDuration="0.85"
-            width="96"
-            visible={true}
-          />
-        )}
+        {this.state.isLoading && <Loader />}
         {this.state.disabled && <Button nextPage={this.updatePage} />}
       </>
     );

@@ -15,7 +15,7 @@ class Searchbar extends Component {
   };
 
   handleChange = e => {
-    this.setState({ value: e.target.value.toLowerCase().trim() });
+    this.setState({ value: e.target.value });
   };
 
   handleSubmit = e => {
@@ -26,7 +26,7 @@ class Searchbar extends Component {
       return;
     }
 
-    this.props.handleSerch(this.state.value);
+    this.props.handleSerch(this.state.value.toLowerCase().trim());
     this.setState({ value: '' });
   };
 
@@ -38,11 +38,9 @@ class Searchbar extends Component {
           <SearchButton type="submit">
             <BsSearch />
           </SearchButton>
-
           <SearchInput
             type="text"
             autocomplete="off"
-            // autofocus
             placeholder="Search images and photos"
             value={value}
             onChange={this.handleChange}
