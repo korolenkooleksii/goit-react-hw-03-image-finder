@@ -15,7 +15,7 @@ class ImageGallery extends Component {
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    if (this.props !== prevProps) {
+    if (this.props.images !== prevProps.images) {
       this.setState({ currentArray: [], page: 1 });
     }
 
@@ -32,7 +32,7 @@ class ImageGallery extends Component {
 
         if (imagesArrey.length === 12) {
           this.setState({ disabled: true });
-        }
+        } else {this.setState({ disabled: false });}
 
         this.setState(({ currentArray }) => ({
           currentArray: [...currentArray, ...imagesArrey],

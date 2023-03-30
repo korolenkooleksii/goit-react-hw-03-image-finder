@@ -21,14 +21,14 @@ class App extends Component {
 
   async componentDidUpdate(prevProps, prevState) {}
 
-  handleSerchSumbit = val => {
+  creatSerchText = val => {
     this.setState({ searchValue: val });
   };
 
   render() {
     return (
       <Container>
-        <Searchbar handleSerch={this.handleSerchSumbit} />
+        <Searchbar handleSerch={this.creatSerchText} />
         <ImageGallery images={this.state.searchValue} />
         <ToastContainer theme="colored" />
       </Container>
