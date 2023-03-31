@@ -3,7 +3,7 @@ import axios from 'axios';
 const KEY = '33551348-9d68666fc5ce894df97e3b30d';
 const ENDPOINT = 'https://pixabay.com/api/';
 
-const fetchImages = async (val, page) => {
+const fetchImages = async (page, val ) => {
   const URL = `${ENDPOINT}?key=${KEY}`;
   const options = {
     params: {

@@ -22,40 +22,34 @@ class ImageGallery extends Component {
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    if (this.props.images !== prevProps.images) {
-      this.initialParam();
+    const value = this.props.images;
+    
+      if (value !== prevProps.images) {
+        if (value) this.initialParam();
+        this.fetchImagesWithQuery();
+        console.log('1 IF this.state.page  - ', this.state.page);
+        console.log('1 value - ', value);
+      }
 
-      console.log(
-        'Вошли в первый иф, Обновили массив',
-        Date.now(),
-        this.state.page
-      );
+    if (
+      prevState.page !== this.state.page &&
+      value === prevProps.images
+    ) {
+      console.log('2 IF this.state.page', this.state.page);
+      console.log('2 value - ', value);
 
-      this.fetchImagesWithQuery();
-
-    } else {
       this.fetchImagesWithQuery();
     }
-
-    // if (
-    //   prevState.page !== this.state.page
-    //   // this.props.images === prevProps.images &&
-    // ) {
-    //   console.log(
-    //     'Вошли во второй иф, т.к. изменился пейдж',
-    //     Date.now(),
-    //     this.state.page
-    //   );
-
-    //   this.fetchImagesWithQuery();
-    // }
   }
 
-  fetchImagesWithQuery = async () => {
+  fetchImagesWithQuery = async (
+    page = this.state.page,
+    val = this.props.images
+  ) => {
     try {
       this.setState({ isLoading: true });
 
-      const imagesArrey = await fetchImages(this.props.images, this.state.page);
+      const imagesArrey = await fetchImages(page, val);
 
       if (imagesArrey.length === 0) {
         toast.info('There are no images for your request.');
