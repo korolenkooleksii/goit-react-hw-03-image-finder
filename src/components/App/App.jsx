@@ -3,7 +3,7 @@ import Searchbar from 'components/Searchbar/Searchbar';
 import { Container } from './App.styled';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
 import { ToastContainer } from 'react-toastify';
-
+import PropTypes from 'prop-types';
 
 class App extends Component {
   state = {
@@ -25,4 +25,10 @@ class App extends Component {
   }
 }
 
+App.propTypes = {
+  value: PropTypes.string,
+};
+
 export default App;
+
+

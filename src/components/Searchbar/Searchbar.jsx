@@ -8,6 +8,7 @@ import {
 import { BsSearch } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from 'prop-types';
 
 class Searchbar extends Component {
   state = {
@@ -50,5 +51,9 @@ class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  handleSerch: PropTypes.func,
+};
 
 export default Searchbar;
