@@ -18,7 +18,7 @@ class App extends Component {
     return (
       <Container>
         <Searchbar handleSerch={this.creatSerchText} />
-        <ImageGallery images={this.state.searchValue} />
+        <ImageGallery image={this.state.searchValue} />
         <ToastContainer theme="colored" />
       </Container>
     );

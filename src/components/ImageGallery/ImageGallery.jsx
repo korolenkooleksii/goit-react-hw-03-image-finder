@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { Gallery } from './ImageGallery.styled';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Button from 'components/Button/Button';
-import fetchImages from 'components/Api/Api';
+import fetchImages from 'Api/api';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loader from '../Loader/Loader';
@@ -17,36 +17,39 @@ class ImageGallery extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const value = this.props.images;
+    const value = this.props.image;
 
-    if (value !== prevProps.images) {
-      this.setState({ currentArray: [], page: 1 });
+    if (
+      value === prevProps.image &&
+      prevState.page !== this.state.page &&
+      this.state.page === 1
+    ) {
+      this.fetchImagesWithQuery(1, value); // выполняется после сброса с новым value
+    }
 
-      // console.log(this.state.page);
-      // console.log(this.props.images);
-      // console.log(this.state.currentArray);
+    if (value !== prevProps.image && this.state.page !== 1) {
+      this.setState({ currentArray: [], page: 1 }); // сброс параметров
+    }
 
-      this.fetchImagesWithQuery();
+    if (value !== prevProps.image && this.state.page === 1) {
+      this.fetchImagesWithQuery(1, value); // выполняется при первом запросе
+    }
+
+    if (prevState.page !== this.state.page && this.state.page !== 1) {
+      this.fetchImagesWithQuery(); // выполняется при смене page
     }
   }
 
   fetchImagesWithQuery = async () => {
+    // const { page, image } = this.state;
     try {
       this.setState({ isLoading: true });
 
-      // console.log('1', this.state.page);
-      // console.log(this.props.images);
-      // console.log(this.state.currentArray);
-
-      const imagesArrey = await fetchImages(this.state.page, this.props.images);
-
-      // console.log('2', this.state.page);
-      // console.log(this.props.images);
-      // console.log(this.state.currentArray);
+      const imagesArrey = await fetchImages(this.state.page, this.props.image);
 
       if (imagesArrey.length === 0) {
         toast.info('There are no images for your request.');
-        this.setState({ isLoading: false });
+        this.setState({ isLoading: false, disabled: false });
         return;
       }
 
@@ -56,17 +59,24 @@ class ImageGallery extends Component {
         this.setState({ disabled: false });
       }
 
-      this.setState(({ currentArray, page }) => ({
+      this.setState(({ currentArray }) => ({
         currentArray: [...currentArray, ...imagesArrey],
         isLoading: false,
-        page: page + 1,
       }));
     } catch (error) {
-      this.setState({ error: true, isLoading: false });
+      this.setState({
+        currentArray: [],
+        page: 1,
+        error: true,
+        isLoading: false,
+        disabled: false,
+      });
     }
   };
 
-  nextPage = () => this.fetchImagesWithQuery();
+  updatePage = () => {
+    this.setState(({ page }) => ({ page: page + 1 }));
+  };
 
   render() {
     const { currentArray, isLoading, disabled, error } = this.state;
@@ -85,7 +95,7 @@ class ImageGallery extends Component {
           ))}
         </Gallery>
         {isLoading && <Loader />}
-        {disabled && <Button nextPage={this.nextPage} />}
+        {disabled && <Button nextPage={this.updatePage} />}
         {error && toast.error('Image loading error. Restart the application.')}
       </>
     );
