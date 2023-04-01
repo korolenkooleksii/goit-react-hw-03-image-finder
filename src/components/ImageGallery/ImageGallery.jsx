@@ -49,7 +49,12 @@ class ImageGallery extends Component {
 
       if (imagesArrey.length === 0) {
         toast.info('There are no images for your request.');
-        this.setState({ isLoading: false, disabled: false });
+        this.setState({
+          currentArray: [],
+          page: 1,
+          isLoading: false,
+          disabled: false,
+        });
         return;
       }
 
