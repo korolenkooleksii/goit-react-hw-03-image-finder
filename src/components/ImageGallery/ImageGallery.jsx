@@ -24,7 +24,7 @@ class ImageGallery extends Component {
       prevState.page !== this.state.page &&
       this.state.page === 1
     ) {
-      this.fetchImagesWithQuery(1, value); // выполняется после сброса с новым value
+      this.fetchImagesWithQuery(); // выполняется после сброса с новым value
     }
 
     if (value !== prevProps.image && this.state.page !== 1) {
