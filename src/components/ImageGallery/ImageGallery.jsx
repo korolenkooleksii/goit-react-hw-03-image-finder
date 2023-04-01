@@ -41,7 +41,6 @@ class ImageGallery extends Component {
   }
 
   fetchImagesWithQuery = async () => {
-    // const { page, image } = this.state;
     try {
       this.setState({ isLoading: true });
 
