@@ -32,7 +32,7 @@ class ImageGallery extends Component {
     }
 
     if (value !== prevProps.image && this.state.page === 1) {
-      this.fetchImagesWithQuery(1, value); // выполняется при первом запросе
+      this.fetchImagesWithQuery(); // выполняется при первом запросе
     }
 
     if (prevState.page !== this.state.page && this.state.page !== 1) {
