@@ -94,7 +94,6 @@ class ImageGallery extends Component {
               webURL={webformatURL}
               largeURL={largeImageURL}
               tags={tags}
-              // toggleModal={this.toggleModal}
             />
           ))}
         </Gallery>
