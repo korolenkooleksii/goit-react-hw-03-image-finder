@@ -27,7 +27,7 @@ class ImageGallery extends Component {
       this.fetchImagesWithQuery(); // выполняется после сброса с новым value
     }
 
-    if (value !== prevProps.image && this.state.page !== 1) {
+    if ((value !== prevProps.image && this.state.page !== 1) || (value !== prevProps.image && this.state.page === 1)) {
       this.setState({ currentArray: [], page: 1 }); // сброс параметров
     }
 
@@ -42,7 +42,7 @@ class ImageGallery extends Component {
 
   fetchImagesWithQuery = async () => {
     try {
-      this.setState({ isLoading: true });
+      this.setState({ isLoading: true, error: false });
 
       const imagesArrey = await fetchImages(this.state.page, this.props.image);
 
@@ -94,7 +94,7 @@ class ImageGallery extends Component {
               webURL={webformatURL}
               largeURL={largeImageURL}
               tags={tags}
-              toggleModal={this.toggleModal}
+              // toggleModal={this.toggleModal}
             />
           ))}
         </Gallery>
